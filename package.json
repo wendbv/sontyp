@@ -1,0 +1,21 @@
+{
+  "name": "sontyp",
+  "version": "1.0.0",
+  "description": "It's basically like lbovet/typson, but... reversed. And gulpable.",
+  "main": "bin/sontyp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "./bin/sontyp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wendbv/sontyp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wendbv/sontyp/issues"
+  },
+  "homepage": "https://github.com/wendbv/sontyp#readme"
+}
