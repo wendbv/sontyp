@@ -4,7 +4,7 @@
   "description": "It's basically like lbovet/typson, but... reversed. And gulpable.",
   "main": "lib/sontyp.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jasmine",
     "start": "./bin/sontyp"
   },
   "repository": {
