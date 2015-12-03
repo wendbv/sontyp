@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/wendbv/sontyp/issues"
   },
-  "homepage": "https://github.com/wendbv/sontyp#readme"
+  "homepage": "https://github.com/wendbv/sontyp#readme",
+  "devDependencies": {
+    "jasmine": "^2.4.0"
+  }
 }
