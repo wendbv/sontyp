@@ -2,7 +2,7 @@
   "name": "sontyp",
   "version": "1.0.0",
   "description": "It's basically like lbovet/typson, but... reversed. And gulpable.",
-  "main": "bin/sontyp.js",
+  "main": "lib/sontyp.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "./bin/sontyp"
