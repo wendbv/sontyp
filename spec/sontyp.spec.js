@@ -127,6 +127,45 @@ describe('Sontyp', () => {
             });
         });
 
-        xdescribe('.parseObject');
+        describe('.parseObject', () => {
+            beforeEach(() => {
+                this.obj = {
+                    title: 'foo', type: 'object',
+                    properties: {
+                        bar: {type: "integer"}
+                    }
+                };
+                this.objTypeDef = [
+                    'interface Foo {',
+                    '  bar: number;',
+                    '}'
+                ].join('\n');
+            });
+
+            it('should return the right type', () => {
+                var type = this.s.parseObject(this.obj);
+                expect(type).toEqual('Foo');
+            });
+
+            it('should add a correct type definition to objectsDone', () => {
+                var type = this.s.parseObject(this.obj);
+                expect(this.s.objectsDone.length).toEqual(1);
+
+                expect(this.s.objectsDone[0].trim()).toEqual(this.objTypeDef);
+            });
+
+            it('should register its type as done', () => {
+                this.s.parseObject(this.obj);
+                expect(this.s.typesDone.indexOf('Foo')).not.toBe(-1);
+            });
+
+            it('shouldn\'t do anything if the type is in typesDone', () => {
+                this.s.typesDone.push('Foo');
+                spyOn(this.s, 'parseThing').and.callThrough();
+
+                this.s.parseObject(this.obj);
+                expect(this.s.parseThing).not.toHaveBeenCalled();
+            });
+        });
     });
 });
