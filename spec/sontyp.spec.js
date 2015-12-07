@@ -63,7 +63,7 @@ describe('Sontyp', () => {
             it('should parse an integer properly', () => {
                 let res = this.s.parseThing({type: 'integer'}, 'foo');
 
-                expect(res).toEqual(['foo', 'integer']);
+                expect(res).toEqual(['foo', 'number']);
             });
 
             it('should parse a string properly', () => {
@@ -75,7 +75,7 @@ describe('Sontyp', () => {
             it('should parse a simple or properly', () => {
                 let res = this.s.parseThing({type: ['string', 'integer']}, 'foo');
 
-                expect(res).toEqual(['foo', 'string | integer']);
+                expect(res).toEqual(['foo', 'string | number']);
             });
 
             it('should parse an array of strings properly', () => {
