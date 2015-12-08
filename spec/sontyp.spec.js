@@ -4,7 +4,7 @@ var st = require('../lib/sontyp');
 
 describe('Sontyp', () => {
     beforeEach(() => {
-        this.obj = {title: 'foo', type: 'object', properties: []};
+        this.obj = {title: 'foo', type: 'object', properties: {}};
     });
 
     it('should export two functions', () => {
