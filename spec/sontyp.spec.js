@@ -1,6 +1,9 @@
 'use strict';
 
-var st = require('../lib/sontyp');
+var fs = require('fs');
+var rewire = require('rewire');
+
+var st = rewire('../lib/sontyp');
 
 describe('Sontyp', () => {
     beforeEach(() => {
@@ -17,18 +20,36 @@ describe('Sontyp', () => {
 
     describe('the function', () => {
         beforeEach(() => {
-            spyOn(st.Sontyp.prototype, 'addThing');
-            spyOn(st.Sontyp.prototype, 'parse');
+            this.spy = jasmine.createSpy('Sontyp')
+                .and.callFake(function() { return this; });
+            this.addThingSpy = jasmine.createSpy('addThing');
+            this.parseSpy = jasmine.createSpy('parse');
+
+            this.spy.prototype.addThing = this.addThingSpy;
+            this.spy.prototype.parse = this.parseSpy;
+
+            this.reset = st.__set__({
+                Sontyp: this.spy,
+            });
+        });
+        afterEach(() => {
+            this.reset();
+        });
+
+
+        it('should initialize Sontyp properly', () => {
+            st.sontyp(this.obj, 'root');
+            expect(this.spy).toHaveBeenCalledWith('root');
         });
 
         it('should call addThing with our object', () => {
             st.sontyp(this.obj);
-            expect(st.Sontyp.prototype.addThing).toHaveBeenCalledWith(this.obj);
+            expect(this.addThingSpy).toHaveBeenCalledWith(this.obj);
         });
 
         it('should start parsing', () => {
             st.sontyp(this.obj);
-            expect(st.Sontyp.prototype.parse).toHaveBeenCalled();
+            expect(this.parseSpy).toHaveBeenCalled();
         });
     });
 
