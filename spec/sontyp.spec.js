@@ -146,6 +146,34 @@ describe('Sontyp', () => {
                 expect(this.s.parseThing).toHaveBeenCalledWith({'type': 'string'}, 'foo');
                 expect(this.s.parseThing).toHaveBeenCalledWith({'type': 'integer'}, 'foo');
             });
+
+            describe('when called with a reference', () => {
+                beforeEach(() => {
+                    this.obj.properties['foo'] = {
+                        '$ref': 'bar',
+                    };
+                    spyOn(this.s, 'addThing');
+                    spyOn(fs, 'readFileSync').and.returnValue('{}');
+                });
+
+                it('should call addByRef', () => {
+                    spyOn(this.s, 'addByRef');
+
+                    this.s.parseThing(this.obj);
+                    expect(this.s.addByRef).toHaveBeenCalledWith('bar');
+                })
+
+                it('should attempt to read the right file', () => {
+                    this.s.parseThing(this.obj);
+                    expect(fs.readFileSync).toHaveBeenCalledWith('bar', {encoding: 'utf-8'});
+                });
+
+                it('should respect the root property', () => {
+                    this.s.root = 'qux/';
+                    this.s.parseThing(this.obj);
+                    expect(fs.readFileSync).toHaveBeenCalledWith('qux/bar', {encoding: 'utf-8'});
+                });
+            });
         });
 
         describe('.parseObject', () => {
