@@ -181,12 +181,15 @@ describe('Sontyp', () => {
                 this.obj = {
                     title: 'foo', type: 'object',
                     properties: {
-                        bar: {type: "integer"}
-                    }
+                        bar: {type: "integer"},
+                        foo: {type: "string"}
+                    },
+                    required: ["bar"],
                 };
                 this.objTypeDef = [
                     'interface Foo {',
                     '  bar: number;',
+                    '  foo?: string;',
                     '}'
                 ].join('\n');
             });
