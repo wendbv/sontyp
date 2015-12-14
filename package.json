@@ -1,6 +1,6 @@
 {
   "name": "sontyp",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "It's basically like lbovet/typson, but... reversed. And gulpable.",
   "main": "lib/sontyp.js",
   "scripts": {
