@@ -78,7 +78,7 @@ describe('Sontyp', () => {
             it('should parse an object properly', () => {
                 let res = this.s.parseThing(this.obj);
 
-                expect(res).toEqual([undefined, 'Foo']);
+                expect(res).toEqual(['foo', 'Foo']);
             });
 
             it('should not fail when there is no type defined', () => {
@@ -134,7 +134,7 @@ describe('Sontyp', () => {
                 });
 
                 it('should parse the object', () => {
-                    spyOn(this.s, 'parseObject');
+                    spyOn(this.s, 'parseObject').and.returnValue('Foo');
                     let res = this.s.parseThing(this.obj2, 'foo');
 
                     expect(this.s.parseObject).toHaveBeenCalledWith(this.obj2.items);
@@ -152,6 +152,17 @@ describe('Sontyp', () => {
 
                 expect(this.s.parseThing).toHaveBeenCalledWith({'type': 'string'}, 'foo');
                 expect(this.s.parseThing).toHaveBeenCalledWith({'type': 'integer'}, 'foo');
+            });
+
+            it('should parse an array with multiple possible types', () => {
+                let res = this.s.parseThing({
+                    'type': 'array',
+                    'items': {
+                        'type': ['string', 'number'],
+                    }
+                }, 'foo');
+
+                expect(res).toEqual(['foo', '(string | number)[]']);
             });
 
             describe('when called with a reference', () => {
