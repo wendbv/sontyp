@@ -81,6 +81,13 @@ describe('Sontyp', () => {
                 expect(res).toEqual([undefined, 'Foo']);
             });
 
+            it('should not fail when there is no type defined', () => {
+                let obj = {title: 'foo', properties: {}};
+
+                let res = this.s.parseThing(obj);
+                expect(res).toEqual([undefined, 'any']);
+            });
+
             it('should parse an integer properly', () => {
                 let res = this.s.parseThing({type: 'integer'}, 'foo');
 
