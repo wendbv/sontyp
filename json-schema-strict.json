@@ -1,7 +1,7 @@
 {
-    "id": "http://json-schema.org/draft-04/schema#",
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "description": "Core schema meta-schema",
+    "id": "http://wendbv.github.io/sontyp/json-schema-strict.json#",
+    "$schema": "http://wendbv.github.io/sontyp/json-schema-strict.json",
+    "description": "Stricter core schema meta-schema",
     "definitions": {
         "schemaArray": {
             "type": "array",
@@ -138,13 +138,22 @@
             ]
         },
         "format": { "type": "string" },
+        "$ref": { "type": "string" },
         "allOf": { "$ref": "#/definitions/schemaArray" },
         "anyOf": { "$ref": "#/definitions/schemaArray" },
         "oneOf": { "$ref": "#/definitions/schemaArray" },
         "not": { "$ref": "#" }
     },
-    "required": ["type"],
-    "extraProperties": false,
+
+    "oneOf": [
+        { "required": ["type"] },
+        { "required": ["$ref"] },
+        { "required": ["allOf"] },
+        { "required": ["anyOf"] },
+        { "required": ["oneOf"] }
+    ],
+
+    "additionalProperties": false,
     "dependencies": {
         "exclusiveMaximum": [ "maximum" ],
         "exclusiveMinimum": [ "minimum" ]
