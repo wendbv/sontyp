@@ -13,7 +13,8 @@ describe('Sontyp', () => {
     it('should export two functions', () => {
         expect(st).toEqual(jasmine.objectContaining({
             sontyp: jasmine.any(Function),
-            Sontyp: jasmine.any(Function)
+            Sontyp: jasmine.any(Function),
+            gulpSontyp: jasmine.any(Function)
         }));
     });
 
