@@ -23,10 +23,10 @@ describe('Sontyp', () => {
         beforeEach(() => {
             this.spy = jasmine.createSpy('Sontyp')
                 .and.callFake(function() { return this; });
-            this.addThingSpy = jasmine.createSpy('addThing');
+            this.addSchemaSpy = jasmine.createSpy('addSchema');
             this.parseSpy = jasmine.createSpy('parse');
 
-            this.spy.prototype.addThing = this.addThingSpy;
+            this.spy.prototype.addSchema = this.addSchemaSpy;
             this.spy.prototype.parse = this.parseSpy;
 
             this.reset = st.__set__({
@@ -43,9 +43,9 @@ describe('Sontyp', () => {
             expect(this.spy).toHaveBeenCalledWith('root');
         });
 
-        it('should call addThing with our object', () => {
+        it('should call addSchema with our object', () => {
             st.sontyp(this.obj);
-            expect(this.addThingSpy).toHaveBeenCalledWith(this.obj);
+            expect(this.addSchemaSpy).toHaveBeenCalledWith(this.obj);
         });
 
         it('should start parsing', () => {
@@ -64,20 +64,20 @@ describe('Sontyp', () => {
         });
 
         it('should add my thing when I tell it to', () => {
-            this.s.addThing(this.obj);
+            this.s.addSchema(this.obj);
 
-            expect(this.s.thingsTodo).toEqual(jasmine.arrayContaining([this.obj]));
+            expect(this.s.schemasTodo).toEqual(jasmine.arrayContaining([this.obj]));
         });
 
         it('should add my thing, however I decide to call it', () => {
-            this.s.addThing(this.obj, 'foo');
+            this.s.addSchema(this.obj, 'foo');
 
-            expect(this.s.thingsTodo[0].title).toEqual('foo');
+            expect(this.s.schemasTodo[0].title).toEqual('foo');
         });
 
-        describe('.parseThing', () => {
+        describe('.parseSchema', () => {
             it('should parse an object properly', () => {
-                let res = this.s.parseThing(this.obj);
+                let res = this.s.parseSchema(this.obj);
 
                 expect(res).toEqual(['foo', 'Foo']);
             });
@@ -85,30 +85,30 @@ describe('Sontyp', () => {
             it('should not fail when there is no type defined', () => {
                 let obj = {title: 'foo', properties: {}};
 
-                let res = this.s.parseThing(obj);
+                let res = this.s.parseSchema(obj);
                 expect(res).toEqual([undefined, 'any']);
             });
 
             it('should parse an integer properly', () => {
-                let res = this.s.parseThing({type: 'integer'}, 'foo');
+                let res = this.s.parseSchema({type: 'integer'}, 'foo');
 
                 expect(res).toEqual(['foo', 'number']);
             });
 
             it('should parse a string properly', () => {
-                let res = this.s.parseThing({type: 'string'}, 'foo');
+                let res = this.s.parseSchema({type: 'string'}, 'foo');
 
                 expect(res).toEqual(['foo', 'string']);
             });
 
             it('should parse a simple or properly', () => {
-                let res = this.s.parseThing({type: ['string', 'integer']}, 'foo');
+                let res = this.s.parseSchema({type: ['string', 'integer']}, 'foo');
 
                 expect(res).toEqual(['foo', 'string | number']);
             });
 
             it('should parse an array of strings properly', () => {
-                let res = this.s.parseThing({
+                let res = this.s.parseSchema({
                     type: 'array',
                     items: {'type': 'string'}
                 }, 'foo');
@@ -129,34 +129,34 @@ describe('Sontyp', () => {
                 });
 
                 it('should parse an array of objects properly', () => {
-                    let res = this.s.parseThing(this.obj2, 'foo');
+                    let res = this.s.parseSchema(this.obj2, 'foo');
 
                     expect(res).toEqual(['foo', 'Foo[]']);
                 });
 
                 it('should parse the object', () => {
-                    spyOn(this.s, 'parseObject').and.returnValue('Foo');
-                    let res = this.s.parseThing(this.obj2, 'foo');
+                    spyOn(this.s, 'createInterface').and.returnValue('Foo');
+                    let res = this.s.parseSchema(this.obj2, 'foo');
 
-                    expect(this.s.parseObject).toHaveBeenCalledWith(this.obj2.items);
+                    expect(this.s.createInterface).toHaveBeenCalledWith(this.obj2.items);
                 });
             });
 
             it('should handle an anyOf correctly', () => {
-                spyOn(this.s, 'parseThing').and.callThrough();
-                let res = this.s.parseThing({
+                spyOn(this.s, 'parseSchema').and.callThrough();
+                let res = this.s.parseSchema({
                     'anyOf': [
                         {'type': 'string'},
                         {'type': 'integer'},
                     ]
                 }, 'foo');
 
-                expect(this.s.parseThing).toHaveBeenCalledWith({'type': 'string'}, 'foo');
-                expect(this.s.parseThing).toHaveBeenCalledWith({'type': 'integer'}, 'foo');
+                expect(this.s.parseSchema).toHaveBeenCalledWith({'type': 'string'}, 'foo');
+                expect(this.s.parseSchema).toHaveBeenCalledWith({'type': 'integer'}, 'foo');
             });
 
             it('should parse an array with multiple possible types', () => {
-                let res = this.s.parseThing({
+                let res = this.s.parseSchema({
                     'type': 'array',
                     'items': {
                         'type': ['string', 'number'],
@@ -171,31 +171,31 @@ describe('Sontyp', () => {
                     this.obj.properties['foo'] = {
                         '$ref': 'bar',
                     };
-                    spyOn(this.s, 'addThing');
+                    spyOn(this.s, 'addSchema');
                     spyOn(fs, 'readFileSync').and.returnValue('{}');
                 });
 
                 it('should call addByRef', () => {
                     spyOn(this.s, 'addByRef');
 
-                    this.s.parseThing(this.obj);
+                    this.s.parseSchema(this.obj);
                     expect(this.s.addByRef).toHaveBeenCalledWith('bar');
                 })
 
                 it('should attempt to read the right file', () => {
-                    this.s.parseThing(this.obj);
+                    this.s.parseSchema(this.obj);
                     expect(fs.readFileSync).toHaveBeenCalledWith('bar', {encoding: 'utf-8'});
                 });
 
                 it('should respect the root property', () => {
                     this.s.root = 'qux/';
-                    this.s.parseThing(this.obj);
+                    this.s.parseSchema(this.obj);
                     expect(fs.readFileSync).toHaveBeenCalledWith('qux/bar', {encoding: 'utf-8'});
                 });
             });
         });
 
-        describe('.parseObject', () => {
+        describe('.createInterface', () => {
             beforeEach(() => {
                 this.obj = {
                     title: 'foo', type: 'object',
@@ -214,28 +214,28 @@ describe('Sontyp', () => {
             });
 
             it('should return the right type', () => {
-                var type = this.s.parseObject(this.obj);
+                var type = this.s.createInterface(this.obj);
                 expect(type).toEqual('Foo');
             });
 
             it('should add a correct type definition to objectsDone', () => {
-                var type = this.s.parseObject(this.obj);
+                var type = this.s.createInterface(this.obj);
                 expect(this.s.objectsDone.length).toEqual(1);
 
                 expect(this.s.objectsDone[0].trim()).toEqual(this.objTypeDef);
             });
 
             it('should register its type as done', () => {
-                this.s.parseObject(this.obj);
+                this.s.createInterface(this.obj);
                 expect(this.s.typesDone.indexOf('Foo')).not.toBe(-1);
             });
 
             it('shouldn\'t do anything if the type is in typesDone', () => {
                 this.s.typesDone.push('Foo');
-                spyOn(this.s, 'parseThing').and.callThrough();
+                spyOn(this.s, 'parseSchema').and.callThrough();
 
-                this.s.parseObject(this.obj);
-                expect(this.s.parseThing).not.toHaveBeenCalled();
+                this.s.createInterface(this.obj);
+                expect(this.s.parseSchema).not.toHaveBeenCalled();
             });
         });
     });
