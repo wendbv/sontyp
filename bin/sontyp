@@ -6,7 +6,7 @@ if(process.argv[2]) {
     var obj = JSON.parse(file);
 
     var sontyp = require('./../lib/sontyp.js');
-    console.log(sontyp.sontyp(obj));
+    console.log(sontyp.sontyp(obj, process.argv[3]));
 } else {
     console.log('Usage: sontyp <url-or-path>\n');
 }
