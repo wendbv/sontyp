@@ -225,10 +225,10 @@ describe('Types', () => {
 
         it('should inlinify properly', () => {
             let o = new TObject(s, {});
-            o.types = [{name: 'foo', type: {inline: 'bar'}, required: false}];
+            o.types = [{name: 'foo', type: {convert: () => {}, inline: 'bar'}, required: false}];
 
             o.inlinify();
-            expect(o.inline).toBe('{\n  foo: bar;\n}');
+            expect(o.inline).toBe('{\nfoo?: bar;\n}');
         });
 
         it('should blockify properly', () => {
@@ -238,7 +238,7 @@ describe('Types', () => {
 
             o.blockify();
 
-            expect(o.block).toBe('interface Foo {}\n\n');
+            expect(o.block).toBe('interface Foo {\n}\n\n');
             expect(o.inline).toBe('Foo');
         });
     });
