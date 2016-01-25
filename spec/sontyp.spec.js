@@ -199,6 +199,7 @@ describe('Types', () => {
             let t = new TTypeList(s, {
                 type: ['foo', 'bar'],
             });
+            t.convert();
             expect(t.inline).toBe('foo | bar');
         });
     });
