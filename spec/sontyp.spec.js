@@ -158,7 +158,10 @@ describe('Types', () => {
         it('should handle xOf right', () => {
             t.xOf([{type: 'string'}, {type: 'number'}], '&');
 
-            expect(t.additionals).toBe('string & number');
+            expect(t.additionalsItems).toEqual([
+                jasmine.any(st.__get__('TString')),
+                jasmine.any(st.__get__('TNumber'))
+            ]);
         });
 
         it('should blockify right', () => {
