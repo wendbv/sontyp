@@ -179,12 +179,14 @@ describe('Types', () => {
         let TArray = st.__get__('TArray');
 
         it('should parse properly', () => {
-            spyOn(s, 'parseSchema').and.returnValue({inline: 'foo'});
+            spyOn(s, 'parseSchema')
+                .and.returnValue({convert: () => {}, inline: 'foo'});
 
             let a = new TArray(s, {
                 type: 'array',
                 items: { 'type': 'foo' }
             });
+            a.convert();
             expect(a.inline).toBe('foo[]');
         });
     });
