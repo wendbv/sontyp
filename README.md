@@ -1,5 +1,7 @@
 # sontyp
-[![Build Status](https://travis-ci.org/wendbv/sontyp.svg)](https://travis-ci.org/wendbv/sontyp)
+[![Travis](https://img.shields.io/travis/wendbv/sontyp.svg)](https://travis-ci.org/wendbv/sontyp)
+[![Coveralls](https://img.shields.io/coveralls/wendbv/sontyp.svg)](https://coveralls.io/github/wendbv/sontyp)
+
 
 Sontyp is a somewhat advanced converter, converting from json-schema to Typescript.
 
