@@ -4,7 +4,8 @@
   "description": "Converts JSON Schema to Typescript .d.ts files.",
   "main": "lib/sontyp.js",
   "scripts": {
-    "test": "jasmine",
+    "test": "istanbul cover jasmine --captureExceptions",
+    "coveralls": "istanbul cover jasmine --captureExceptions && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "start": "./bin/sontyp"
   },
   "repository": {
@@ -19,6 +20,8 @@
   },
   "homepage": "https://github.com/wendbv/sontyp#readme",
   "devDependencies": {
+    "coveralls": "^2.11.6",
+    "istanbul": "^0.4.2",
     "jasmine": "^2.4.0",
     "rewire": "^2.5.1"
   },
