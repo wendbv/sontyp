@@ -95,7 +95,6 @@ describe('class Sontyp', () => {
                 'integer': 'TNumber',
                 'boolean': 'TBoolean',
                 'array': 'TArray',
-                'object': 'TObject',
             };
 
             for(let type in map) {
