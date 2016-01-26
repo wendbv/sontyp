@@ -163,6 +163,13 @@ describe('Types', () => {
             ]);
         });
 
+        it('should not include null-type additionals', () => {
+            t.xOf([{type: 'string'}, {type: 'null'}], '&');
+
+            t.parseAdditionals();
+            expect(t.additionals).toBe('string');
+        });
+
         it('should blockify right', () => {
             t.name = 'foo';
             t.inline = 'bar';
