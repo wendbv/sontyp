@@ -1,6 +1,6 @@
 {
   "name": "sontyp",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Converts JSON Schema to Typescript .d.ts files.",
   "main": "lib/sontyp.js",
   "scripts": {
