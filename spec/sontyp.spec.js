@@ -234,7 +234,7 @@ describe('Types', () => {
             o.types = [{name: 'foo', type: {convert: () => {}, inline: 'bar'}, required: false}];
 
             o.inlinify();
-            expect(o.inline).toBe('{\nfoo?: bar;\n}');
+            expect(o.inline).toBe('{\n\'foo\'?: bar;\n}');
         });
 
         it('should blockify properly', () => {
